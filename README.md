@@ -59,11 +59,23 @@ The system enforces role-based access (Admin / Instructor / Student) and uses DT
 
 ## 🖼️ Screenshots
 
-> _Add screenshots in `docs/screenshots/` and reference them here_
+### Dashboard
 
-| Login | Course List | Enrollment Form |
-|:---:|:---:|:---:|
-| _coming soon_ | _coming soon_ | _coming soon_ |
+![Home Dashboard](docs/screenshots/home.png)
+
+### Application Views
+
+| Login Page | Course Management |
+|:---:|:---:|
+| ![Login](docs/screenshots/login.png) | ![Courses](docs/screenshots/courses.png) |
+| **Enrollment Management** | **REST API — Swagger UI (Live Request)** |
+| ![Enrollments](docs/screenshots/enrollments.png) | ![Swagger](docs/screenshots/swagger.png) |
+
+### Documented API Response Schema
+
+![Swagger Schema](docs/screenshots/swagger-schema.png)
+
+> The REST API is fully documented with **OpenAPI / Swagger**, including request/response schemas and explicit handling for success (`200`) and error (`404`) cases.
 
 ## ✨ Features
 
