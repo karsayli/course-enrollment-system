@@ -2,170 +2,216 @@
 
 [![Java](https://img.shields.io/badge/Java-17-007396?logo=openjdk&logoColor=white)](https://www.java.com/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.4-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
-[![Spring Security](https://img.shields.io/badge/Spring_Security-OAuth2-6DB33F?logo=springsecurity&logoColor=white)](https://spring.io/projects/spring-security)
+[![Spring Security](https://img.shields.io/badge/Spring_Security-6-6DB33F?logo=springsecurity&logoColor=white)](https://spring.io/projects/spring-security)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Thymeleaf](https://img.shields.io/badge/Thymeleaf-3-005F0F?logo=thymeleaf&logoColor=white)](https://www.thymeleaf.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> Full-stack **Spring Boot** application for managing students, instructors, courses, and enrollments — with a Thymeleaf MVC UI and a documented REST API.
+A full-stack Spring Boot application for managing courses, students, instructors, and enrollments. The project includes a Thymeleaf MVC web interface, a documented REST API, authentication, database persistence, Docker support, and test coverage.
 
----
+## Table of Contents
 
-## 📖 About
+- [Overview](#overview)
+- [Screenshots](#screenshots)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Getting Started](#getting-started)
+- [API Documentation](#api-documentation)
+- [Project Structure](#project-structure)
+- [Troubleshooting](#troubleshooting)
+- [Roadmap](#roadmap)
 
-Course Enrollment System is a full-stack web application for managing university-style course operations: creating courses, registering students and instructors, and handling enrollments through their full lifecycle.
+## Overview
 
-The project follows a clean **layered architecture** (Controller → Service → DAO/Repository) and exposes both a **Thymeleaf-based MVC UI** and a **REST API** documented with **OpenAPI/Swagger**. Authentication and role-based authorization are handled by **Spring Security + OAuth2**, with schema migrations managed by **Liquibase** and session storage backed by **Spring Session JDBC**.
+Course Enrollment System models a university-style enrollment workflow. It supports managing students, instructors, courses, and enrollment records through both server-rendered pages and REST endpoints.
 
-## 🏗️ Architecture
+The application follows a layered Spring architecture:
 
-```mermaid
-flowchart TB
-    subgraph ClientLayer["Client Layer"]
-        UI[Thymeleaf Web UI]
-        APIClient[REST API Clients]
-    end
+- Controllers handle MVC and REST requests.
+- Services contain business logic.
+- DAO and repository classes handle persistence.
+- DTOs separate API contracts from JPA entities.
+- Spring Security protects the web application.
 
-    subgraph WebLayer["Web Layer"]
-        MVC[MVC Controllers]
-        RESTCtrl[REST Controllers]
-        SEC[Spring Security<br/>OAuth2 · Roles]
-    end
+The default local setup uses an H2 in-memory database for fast development. A PostgreSQL-backed Docker setup is also included for a production-like environment.
 
-    subgraph ServiceLayer["Service Layer"]
-        SVC[Business Services<br/>Course · Enrollment · Student · Instructor · UserAccount]
-    end
-
-    subgraph DataLayer["Data Layer"]
-        DAO[DAO / Repository]
-        DB[(PostgreSQL / H2)]
-    end
-
-    UI --> MVC
-    APIClient --> RESTCtrl
-    MVC --> SEC
-    RESTCtrl --> SEC
-    SEC --> SVC
-    SVC --> DAO
-    DAO --> DB
-```
-
-The system enforces role-based access (Admin / Instructor / Student) and uses DTOs to decouple the persistence model from the API contracts.
-
-## 🖼️ Screenshots
+## Screenshots
 
 ### Dashboard
 
 ![Home Dashboard](docs/screenshots/home.png)
 
-### Application Views
+### Main Views
 
-| Login Page | Course Management |
+| Login | Courses |
 |:---:|:---:|
 | ![Login](docs/screenshots/login.png) | ![Courses](docs/screenshots/courses.png) |
-| **Enrollment Management** | **REST API — Swagger UI (Live Request)** |
+
+| Enrollments | Swagger UI |
+|:---:|:---:|
 | ![Enrollments](docs/screenshots/enrollments.png) | ![Swagger](docs/screenshots/swagger.png) |
 
-### Documented API Response Schema
+### API Schema
 
 ![Swagger Schema](docs/screenshots/swagger-schema.png)
 
-> The REST API is fully documented with **OpenAPI / Swagger**, including request/response schemas and explicit handling for success (`200`) and error (`404`) cases.
+## Features
 
-## ✨ Features
+### Web Application
 
-### 👥 User & Access Management
-- User registration and authentication
-- Role-based authorization (Admin · Instructor · Student)
-- OAuth2 client + Authorization Server support
-- Persistent sessions via Spring Session JDBC
-
-### 🎓 Course & Enrollment Management
-- Full CRUD operations for Courses, Instructors, Students
-- Enrollment lifecycle management (ENROLLED / DROPPED / COMPLETED)
-- Instructor ranking (Lecturer · Assistant Professor · Professor)
-- Student status tracking (Active · Graduated · Suspended)
-
-### 🌐 Web & API
-- Thymeleaf MVC UI with Spring Security integration
-- Documented REST API (OpenAPI / Swagger UI)
+- Thymeleaf-based MVC pages
+- Login and logout flow with Spring Security
+- Course, student, instructor, and enrollment management views
 - Form validation with Bean Validation
-- Email notifications via Spring Mail
+- Static CSS and JavaScript assets
 
-### 🧪 Quality & DevOps
-- Unit & integration tests with JUnit and Spring Security Test
-- Code coverage reporting with JaCoCo
-- Liquibase database migrations
-- Dockerized with PostgreSQL via docker-compose
+### Course Management
 
-## 🛠️ Tech Stack
+- Create, read, update, and delete courses
+- Assign instructors to courses
+- Find courses by ID, code, instructor, or capacity status
 
-| Layer | Technology |
-|-------|-----------|
-| **Language** | Java 17 |
-| **Framework** | Spring Boot 3.2.4 |
-| **Security** | Spring Security · OAuth2 Client · OAuth2 Authorization Server |
-| **Persistence** | Spring Data JPA · Hibernate |
-| **Database** | PostgreSQL 16 (prod) · H2 (dev) |
-| **Migrations** | Liquibase |
-| **Session** | Spring Session JDBC |
-| **View Layer** | Thymeleaf · Thymeleaf Extras Spring Security |
-| **API Docs** | SpringDoc OpenAPI / Swagger UI |
-| **Mail** | Spring Boot Starter Mail |
-| **Testing** | JUnit · Spring Boot Test · Spring Security Test · JaCoCo |
-| **Build** | Gradle |
-| **Deployment** | Docker · docker-compose |
+### Enrollment Management
 
-## 🚀 Quick Start
+- Create and update enrollment records
+- Track enrollment lifecycle states
+- Query enrollments by student or course
+- Prevent duplicate student-course enrollment checks through the API
 
-### With Docker (recommended)
+### Users and Security
+
+- Custom user details service and authentication provider
+- BCrypt password hashing
+- Session-backed login state
+- Seeded local users for development
+
+### API and Documentation
+
+- REST API for courses, students, instructors, and enrollments
+- OpenAPI documentation with Swagger UI
+- Request and response schemas generated by SpringDoc
+
+### Quality and DevOps
+
+- Gradle build
+- JUnit and Spring Boot tests
+- Spring Security test support
+- JaCoCo coverage reports
+- Dockerfile and docker-compose setup
+- PostgreSQL and H2 database support
+- Liquibase dependency and changelog structure
+
+## Tech Stack
+
+| Area | Technology |
+| --- | --- |
+| Language | Java 17 |
+| Framework | Spring Boot 3.2.4 |
+| Web | Spring MVC, Thymeleaf |
+| Security | Spring Security, BCrypt, Spring Session JDBC |
+| API Docs | SpringDoc OpenAPI, Swagger UI |
+| Persistence | Spring Data JPA, Hibernate |
+| Databases | H2, PostgreSQL 16 |
+| Migrations | Liquibase |
+| Mail | Spring Boot Starter Mail |
+| Testing | JUnit, Spring Boot Test, Spring Security Test |
+| Coverage | JaCoCo |
+| Build Tool | Gradle |
+| Deployment | Docker, docker-compose |
+
+## Architecture
+
+```mermaid
+flowchart TB
+    subgraph Client["Client Layer"]
+        WebUI["Thymeleaf Web UI"]
+        ApiClient["REST API Clients"]
+    end
+
+    subgraph Web["Web Layer"]
+        MvcControllers["MVC Controllers"]
+        RestControllers["REST Controllers"]
+        Security["Spring Security"]
+    end
+
+    subgraph Business["Service Layer"]
+        Services["Business Services"]
+    end
+
+    subgraph Data["Data Layer"]
+        Dao["DAO / Repository"]
+        Database[("H2 / PostgreSQL")]
+    end
+
+    WebUI --> MvcControllers
+    ApiClient --> RestControllers
+    MvcControllers --> Security
+    RestControllers --> Security
+    Security --> Services
+    Services --> Dao
+    Dao --> Database
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Java 17 or newer
+- Gradle, or the included Gradle wrapper
+- Docker and Docker Compose, if you want to run with PostgreSQL
+
+### Run with Docker
 
 ```bash
 docker-compose up --build
 ```
 
-This starts both the PostgreSQL database and the Spring Boot application. Access the app at **http://localhost:8080**.
+This starts:
 
-### Without Docker
+- PostgreSQL on port `5432`
+- The Spring Boot application on `http://localhost:8080`
 
-```bash
-./gradlew bootRun         # macOS/Linux
-gradlew.bat bootRun       # Windows
-```
+Docker database defaults:
 
-By default the app uses an in-memory **H2** database for development.
+| Property | Value |
+| --- | --- |
+| Database | `coursedb` |
+| User | `courseuser` |
+| Password | `coursepass` |
 
-## ⚙️ Detailed Setup
+### Run Locally with H2
 
-### Prerequisites
-- Java 17+
-- Gradle (or use the included Gradle wrapper `gradlew`)
-- Docker & docker-compose (optional, for containerized run)
-- PostgreSQL 16 (optional, if not using Docker)
-
-### Local Development (H2 in-memory)
+On macOS or Linux:
 
 ```bash
 ./gradlew bootRun
 ```
 
-- App: **http://localhost:8080**
-- H2 Console: **http://localhost:8080/h2-console**
-- Swagger UI: **http://localhost:8080/swagger-ui**
-
-### Production-like Run (PostgreSQL via Docker)
+On Windows:
 
 ```bash
-docker-compose up --build
+gradlew.bat bootRun
 ```
 
-Default credentials (configurable in `docker-compose.yml`):
-```
-DB:       coursedb
-User:     courseuser
-Password: coursepass
-```
+Local URLs:
+
+| Service | URL |
+| --- | --- |
+| Application | `http://localhost:8080` |
+| H2 Console | `http://localhost:8080/h2-console` |
+| Swagger UI | `http://localhost:8080/swagger-ui` |
+| OpenAPI JSON | `http://localhost:8080/v3/api-docs` |
+
+### Default Development Users
+
+The application creates these users on startup if they do not already exist:
+
+| Username | Password | Role |
+| --- | --- | --- |
+| `admin` | `admin123` | `ADMIN` |
+| `subadmin` | `subadmin123` | `SUBADMIN` |
 
 ### Run Tests
 
@@ -173,100 +219,123 @@ Password: coursepass
 ./gradlew test
 ```
 
-Generate a JaCoCo coverage report:
+Generate the JaCoCo coverage report:
 
 ```bash
 ./gradlew jacocoTestReport
-# Report: build/customJacocoReportDir/jacocoHtml/index.html
 ```
 
-## 📡 API Documentation
+Coverage output:
 
-Once the app is running, interactive API documentation is available at:
-
-- **Swagger UI:** http://localhost:8080/swagger-ui
-- **OpenAPI JSON:** http://localhost:8080/v3/api-docs
-
-### Main REST Endpoints
-
-| Resource | Endpoints |
-|----------|-----------|
-| Courses | `GET / POST / PUT / DELETE  /api/courses` |
-| Enrollments | `GET / POST / PUT / DELETE  /api/enrollments` |
-| Instructors | `GET / POST / PUT / DELETE  /api/instructors` |
-| Students | `GET / POST / PUT / DELETE  /api/students` |
-
-## 🗂️ Project Structure
-
+```text
+build/customJacocoReportDir/jacocoHtml/index.html
 ```
+
+## API Documentation
+
+After starting the application, open Swagger UI:
+
+```text
+http://localhost:8080/swagger-ui
+```
+
+Main REST resources:
+
+| Resource | Base Path | Supported Operations |
+| --- | --- | --- |
+| Courses | `/api/courses` | List, find, create, update, delete |
+| Students | `/api/students` | List, find, create, update, delete |
+| Instructors | `/api/instructors` | List, find, create, update, delete |
+| Enrollments | `/api/enrollments` | List, find, create, update, delete |
+
+Additional query endpoints include:
+
+- `/api/courses/code/{code}`
+- `/api/courses/instructor/{instructorId}`
+- `/api/courses/full`
+- `/api/students/email/{email}`
+- `/api/instructors/email/{email}`
+- `/api/enrollments/student/{studentId}`
+- `/api/enrollments/course/{courseId}`
+- `/api/enrollments/exists/student/{studentId}/course/{courseId}`
+
+## Project Structure
+
+```text
 src/main/java/com/example/courseenrollmentsystem/
-├── configuration/        # Security & OpenAPI configuration
-├── controller/           # Thymeleaf MVC controllers
-│   └── api/              # REST controllers
-├── service/              # Business logic
-├── dao/                  # Data Access Objects (interfaces + impl)
-├── repository/           # Spring Data JPA repositories
-├── dataModel/            # JPA entities (Course, Student, ...)
-│   └── enums/            # Domain enums (Status, Role, Rank)
-├── dto/                  # Data Transfer Objects
-└── security/             # CustomUserDetails & auth provider
+|-- configuration/          Security and OpenAPI configuration
+|-- controller/             Thymeleaf MVC controllers
+|   `-- api/                REST controllers
+|-- dao/                    DAO interfaces and implementations
+|-- dataModel/              JPA entities
+|   `-- enums/              Domain enums
+|-- dto/                    Data Transfer Objects
+|-- repository/             Spring Data JPA repositories
+|-- security/               Authentication and user details
+`-- service/                Business services and implementations
 
 src/main/resources/
-├── templates/            # Thymeleaf HTML templates
-├── static/               # CSS / JS / static assets
-├── db/changelog/         # Liquibase migrations
-└── application.properties
+|-- db/changelog/           Liquibase changelog files
+|-- static/                 CSS, JavaScript, and static assets
+|-- templates/              Thymeleaf templates
+`-- application.properties  Local application configuration
 ```
 
-## 📝 Notes & Current Limitations
+## Configuration Notes
 
-- The default profile uses an **in-memory H2** database — data is lost on restart
-- Liquibase is **disabled by default** in `application.properties`; enable it for managed migrations
-- Email functionality requires SMTP configuration in `application.properties`
-- OAuth2 Authorization Server is configured but requires client registration for external use
+- The default configuration uses H2 in-memory storage, so local data is reset when the app restarts.
+- Docker Compose overrides the datasource settings to use PostgreSQL.
+- Liquibase is currently disabled by default with `spring.liquibase.enabled=false`.
+- Email support requires SMTP properties before mail sending can be used.
+- The REST API is currently permitted in security configuration for easier local development.
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
-<details>
-<summary><b>Port 8080 already in use</b></summary>
+### Port 8080 is already in use
 
-Change the port in `src/main/resources/application.properties`:
+Change the application port in `src/main/resources/application.properties`:
+
 ```properties
 server.port=8081
 ```
-</details>
 
-<details>
-<summary><b>Docker build fails</b></summary>
+### Docker build or startup fails
 
-- Make sure Docker Desktop is running
-- Try cleaning old containers: `docker-compose down -v && docker-compose up --build`
-</details>
+Make sure Docker Desktop is running, then recreate the containers:
 
-<details>
-<summary><b>PostgreSQL connection refused</b></summary>
+```bash
+docker-compose down -v
+docker-compose up --build
+```
 
-- Verify the `db` container is healthy: `docker ps`
-- Check `docker-compose.yml` credentials match what the app expects
-</details>
+### PostgreSQL connection refused
 
-## 🚧 Future Improvements
+Check whether the database container is running:
 
-- Frontend SPA (React / Vue) consuming the REST API
-- Pagination and filtering on list endpoints
-- Email verification on user registration
-- Audit logging (created/modified by/at)
-- Comprehensive integration tests with Testcontainers
-- Kubernetes deployment manifests
-- Refresh token support for OAuth2
+```bash
+docker ps
+```
 
-## 👤 Author
+Also verify that the credentials in `docker-compose.yml` match the datasource environment variables used by the `app` service.
+
+## Roadmap
+
+- Add pagination and filtering to list endpoints
+- Add email verification for user registration
+- Add audit fields for created and updated records
+- Add Testcontainers-based integration tests
+- Add refresh token support for OAuth2 flows
+- Add Kubernetes deployment manifests
+- Build a separate SPA client for the REST API
+
+## Author
 
 **Aylin Kars**
-Czech Technical University in Prague — FIT
-🔗 [GitHub](https://github.com/karsayli)
 
-## 📄 License
+Czech Technical University in Prague, Faculty of Information Technology
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-            
+[GitHub](https://github.com/karsayli)
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
