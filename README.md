@@ -22,36 +22,32 @@ The project follows a clean **layered architecture** (Controller → Service →
 
 ```mermaid
 flowchart TB
-    subgraph Client["Client Layer"]
+    subgraph ClientLayer["Client Layer"]
         UI[Thymeleaf Web UI]
-        API[REST API Clients]
+        APIClient[REST API Clients]
     end
 
-    subgraph Web["Web Layer"]
+    subgraph WebLayer["Web Layer"]
         MVC[MVC Controllers]
-        REST[REST Controllers]
+        RESTCtrl[REST Controllers]
         SEC[Spring Security<br/>OAuth2 · Roles]
     end
 
-    subgraph Service["Service Layer"]
-        S1[CourseService]
-        S2[EnrollmentService]
-        S3[StudentService]
-        S4[InstructorService]
-        S5[UserAccountService]
+    subgraph ServiceLayer["Service Layer"]
+        SVC[Business Services<br/>Course · Enrollment · Student · Instructor · UserAccount]
     end
 
-    subgraph Data["Data Layer"]
+    subgraph DataLayer["Data Layer"]
         DAO[DAO / Repository]
         DB[(PostgreSQL / H2)]
     end
 
     UI --> MVC
-    API --> REST
+    APIClient --> RESTCtrl
     MVC --> SEC
-    REST --> SEC
-    SEC --> Service
-    Service --> DAO
+    RESTCtrl --> SEC
+    SEC --> SVC
+    SVC --> DAO
     DAO --> DB
 ```
 
@@ -273,3 +269,4 @@ Czech Technical University in Prague — FIT
 ## 📄 License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+            
