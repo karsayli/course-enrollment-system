@@ -1,0 +1,101 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.4'
+	id 'io.spring.dependency-management' version '1.1.6'
+	id 'jacoco'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'Demo project for Spring Boot'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+jacoco {
+    toolVersion = "0.8.10"
+    reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	gradlePluginPortal()
+	mavenCentral()
+	maven { url = 'https://repo.spring.io/snapshot' }
+	maven { url 'https://repo.spring.io/release' }
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+    // CORE SPRING
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // JDBC Session storage
+    implementation 'org.springframework.session:spring-session-jdbc'
+
+    // Liquibase (correct dependency!)
+    implementation 'org.liquibase:liquibase-core'
+
+    // OAuth2 / Authorization Server
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
+
+    // Mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    testImplementation 'junit:junit:4.13.1'
+
+    // Thymeleaf extras for Spring Security
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+    // OpenAPI/Swagger for REST API documentation
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+
+    // Database drivers
+    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'com.h2database:h2'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // TEST
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = true
+
+        xml.outputLocation = file("$buildDir/customJacocoReportDir/jacocoXml.xml")
+        html.outputLocation = file("$buildDir/customJacocoReportDir/jacocoHtml")
+        csv.outputLocation = file("$buildDir/customJacocoReportDir/jacocoCsv.csv")
+    }
+}
+

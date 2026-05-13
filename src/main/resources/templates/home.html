@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home • Course Enrollment System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            transition: all 0.4s ease;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 min-h-screen font-sans antialiased">
+
+<!-- Header (Same premium style as before) -->
+<header class="bg-white/80 backdrop-blur-lg shadow-lg border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700">
+                Course Enrollment System
+            </h1>
+            <p class="text-gray-600 text-sm mt-1">
+                Welcome back, <span class="font-semibold text-indigo-700" th:text="${username}">User</span>!
+            </p>
+        </div>
+        <nav class="flex flex-wrap gap-6 text-gray-700 font-medium">
+            <a href="/home" class="text-indigo-600 font-bold flex items-center gap-2 border-b-2 border-indigo-600 pb-1">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="/students" class="hover:text-indigo-600 transition flex items-center gap-2">
+                <i class="fas fa-users"></i> Students
+            </a>
+            <a href="/instructors" class="hover:text-indigo-600 transition flex items-center gap-2">
+                <i class="fas fa-chalkboard-teacher"></i> Instructors
+            </a>
+            <a href="/courses" class="hover:text-indigo-600 transition flex items-center gap-2">
+                <i class="fas fa-book-open"></i> Courses
+            </a>
+            <a href="/enrollments" class="hover:text-indigo-600 transition flex items-center gap-2">
+                <i class="fas fa-clipboard-list"></i> Enrollments
+            </a>
+            <a href="/logout" class="text-red-600 hover:text-red-700 transition flex items-center gap-2">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </div>
+</header>
+
+<!-- Main Dashboard -->
+<main class="max-w-7xl mx-auto px-6 py-12">
+
+    <!-- Hero Welcome Section -->
+    <div class="text-center mb-16">
+        <h2 class="text-5xl font-extrabold text-gray-800 mb-4">
+            Welcome back, <span class="gradient-text" th:text="${username}">User</span>!
+        </h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto" th:text="${dashboardMessage}">
+            This is your central hub to manage courses, students, instructors, and enrollments.
+        </p>
+    </div>
+
+    <!-- Stats / Quick Overview Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div class="glass-card rounded-2xl p-8 text-center card-hover">
+            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-2xl">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-800">Students</h3>
+            <p class="text-gray-600 mt-2">Manage student records</p>
+            <a href="/students" class="mt-4 inline-block text-indigo-600 font-semibold hover:underline">Go →</a>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 text-center card-hover">
+            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white text-2xl">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-800">Instructors</h3>
+            <p class="text-gray-600 mt-2">View & edit faculty</p>
+            <a href="/instructors" class="mt-4 inline-block text-indigo-600 font-semibold hover:underline">Go →</a>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 text-center card-hover">
+            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-green-500 to-teal-600 rounded-full flex items-center justify-center text-white text-2xl">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-800">Courses</h3>
+            <p class="text-gray-600 mt-2">Browse all courses</p>
+            <a href="/courses" class="mt-4 inline-block text-indigo-600 font-semibold hover:underline">Go →</a>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 text-center card-hover">
+            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center text-white text-2xl">
+                <i class="fas fa-clipboard-check"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-800">Enrollments</h3>
+            <p class="text-gray-600 mt-2">Track registrations</p>
+            <a href="/enrollments" class="mt-4 inline-block text-indigo-600 font-semibold hover:underline">Go →</a>
+        </div>
+    </div>
+
+    <!-- Announcements / Notifications -->
+    <div class="glass-card rounded-2xl p-8">
+        <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xl">
+                <i class="fas fa-bullhorn"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800">Announcements & Updates</h3>
+        </div>
+        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 border-l-4 border-indigo-600 p-6 rounded-r-lg">
+            <p class="text-gray-700 text-lg italic">
+                No new notifications at this time. Check back soon for updates, new features, or system announcements!
+            </p>
+            <p class="text-sm text-gray-500 mt-3">Last updated: November 2025</p>
+        </div>
+    </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-gradient-to-r from-gray-900 to-black text-white py-12 mt-20">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+        <p class="text-sm opacity-80">
+            © 2025 <span class="font-bold text-indigo-400">Course Enrollment System</span>. All rights reserved.
+        </p>
+        <p class="text-xs opacity-60 mt-2">Built with love using Spring Boot & Tailwind CSS</p>
+    </div>
+</footer>
+
+</body>
+</html>

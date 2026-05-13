@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Enrollment System - Client Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        button.secondary {
+            background: #6c757d;
+        }
+        
+        button.secondary:hover {
+            background: #5a6268;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            border-radius: 5px;
+        }
+        
+        .error {
+            background: #ffebee;
+            border-left-color: #f44336;
+        }
+        
+        .success {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+        }
+        
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+        
+        .complex-operation {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .complex-operation h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .complex-operation p {
+            color: #856404;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Course Enrollment System</h1>
+        <p class="subtitle">REST API Client Application - Complex Business Operation Demo</p>
+        
+        <!-- Complex Business Operation Section -->
+        <div class="section complex-operation">
+            <h3>📋 Complex Business Operation: "Enroll Student in Course"</h3>
+            <p>
+                <strong>Description:</strong> This complex operation demonstrates a multi-step business process that involves 
+                multiple REST API calls. The operation:
+            </p>
+            <ol style="margin-left: 20px; color: #856404;">
+                <li>Fetches all available students (GET /api/students)</li>
+                <li>Fetches all available courses (GET /api/courses)</li>
+                <li>Checks if enrollment already exists (GET /api/enrollments/exists/student/{id}/course/{id})</li>
+                <li>Checks course capacity by getting full courses (GET /api/courses/full)</li>
+                <li>Creates the enrollment (POST /api/enrollments)</li>
+                <li>Verifies the enrollment was created (GET /api/enrollments/{id})</li>
+            </ol>
+            <p>
+                This demonstrates a real-world scenario where a single business action requires multiple API calls 
+                to validate business rules and complete the transaction.
+            </p>
+            
+            <div class="form-group">
+                <label>Student ID:</label>
+                <input type="number" id="enrollStudentId" placeholder="Enter student ID">
+            </div>
+            <div class="form-group">
+                <label>Course ID:</label>
+                <input type="number" id="enrollCourseId" placeholder="Enter course ID">
+            </div>
+            <button onclick="performComplexEnrollment()">🚀 Execute Complex Enrollment Operation</button>
+            <div id="complexResult"></div>
+        </div>
+        
+        <!-- Quick API Tests -->
+        <div class="section">
+            <h2>Quick API Tests</h2>
+            
+            <h3 style="margin-top: 20px; margin-bottom: 10px;">Students</h3>
+            <button onclick="getAllStudents()">Get All Students</button>
+            <button onclick="getStudentById()" class="secondary">Get Student by ID</button>
+            <input type="number" id="studentIdInput" placeholder="Student ID" style="width: 150px; display: inline-block;">
+            
+            <h3 style="margin-top: 20px; margin-bottom: 10px;">Courses</h3>
+            <button onclick="getAllCourses()">Get All Courses</button>
+            <button onclick="getFullCourses()" class="secondary">Get Full Courses (Complex Query)</button>
+            
+            <h3 style="margin-top: 20px; margin-bottom: 10px;">Enrollments</h3>
+            <button onclick="getAllEnrollments()">Get All Enrollments</button>
+            <button onclick="getEnrollmentsByStudent()" class="secondary">Get Enrollments by Student ID</button>
+            <input type="number" id="enrollStudentLookup" placeholder="Student ID" style="width: 150px; display: inline-block;">
+            
+            <div id="apiResult"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = '/api';
+        
+        // Complex Business Operation: Enroll Student in Course
+        async function performComplexEnrollment() {
+            const resultDiv = document.getElementById('complexResult');
+            resultDiv.innerHTML = '<div class="loading"></div> Processing...';
+            
+            const studentId = document.getElementById('enrollStudentId').value;
+            const courseId = document.getElementById('enrollCourseId').value;
+            
+            if (!studentId || !courseId) {
+                resultDiv.innerHTML = '<div class="result error">Please enter both Student ID and Course ID</div>';
+                return;
+            }
+            
+            try {
+                const steps = [];
+                
+                // Step 1: Get all students
+                steps.push('Step 1: Fetching all students...');
+                const studentsResponse = await fetch(`${API_BASE_URL}/students`);
+                const students = await studentsResponse.json();
+                const studentExists = students.some(s => s.id == studentId);
+                if (!studentExists) {
+                    throw new Error(`Student with ID ${studentId} not found`);
+                }
+                steps.push(`✓ Student ${studentId} found`);
+                
+                // Step 2: Get all courses
+                steps.push('Step 2: Fetching all courses...');
+                const coursesResponse = await fetch(`${API_BASE_URL}/courses`);
+                const courses = await coursesResponse.json();
+                const courseExists = courses.some(c => c.id == courseId);
+                if (!courseExists) {
+                    throw new Error(`Course with ID ${courseId} not found`);
+                }
+                steps.push(`✓ Course ${courseId} found`);
+                
+                // Step 3: Check if enrollment already exists
+                steps.push('Step 3: Checking if enrollment already exists...');
+                const existsResponse = await fetch(`${API_BASE_URL}/enrollments/exists/student/${studentId}/course/${courseId}`);
+                const exists = await existsResponse.json();
+                if (exists) {
+                    throw new Error(`Student ${studentId} is already enrolled in course ${courseId}`);
+                }
+                steps.push(`✓ No existing enrollment found`);
+                
+                // Step 4: Check course capacity (get full courses)
+                steps.push('Step 4: Checking course capacity...');
+                const fullCoursesResponse = await fetch(`${API_BASE_URL}/courses/full`);
+                const fullCourses = await fullCoursesResponse.json();
+                const isFull = fullCourses.some(c => c.id == courseId);
+                if (isFull) {
+                    throw new Error(`Course ${courseId} has reached its capacity`);
+                }
+                steps.push(`✓ Course has available capacity`);
+                
+                // Step 5: Create enrollment
+                steps.push('Step 5: Creating enrollment...');
+                const createResponse = await fetch(`${API_BASE_URL}/enrollments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        studentId: parseInt(studentId),
+                        courseId: parseInt(courseId),
+                        status: 'ENROLLED'
+                    })
+                });
+                
+                if (!createResponse.ok) {
+                    const errorText = await createResponse.text();
+                    throw new Error(`Failed to create enrollment: ${errorText}`);
+                }
+                
+                const enrollment = await createResponse.json();
+                steps.push(`✓ Enrollment created with ID ${enrollment.id}`);
+                
+                // Step 6: Verify enrollment was created
+                steps.push('Step 6: Verifying enrollment...');
+                const verifyResponse = await fetch(`${API_BASE_URL}/enrollments/${enrollment.id}`);
+                const verifiedEnrollment = await verifyResponse.json();
+                steps.push(`✓ Enrollment verified: Student ${verifiedEnrollment.studentId} enrolled in Course ${verifiedEnrollment.courseId}`);
+                
+                resultDiv.innerHTML = `
+                    <div class="result success">
+                        <h4>✅ Complex Operation Completed Successfully!</h4>
+                        <p><strong>Enrollment ID:</strong> ${enrollment.id}</p>
+                        <p><strong>Operation Steps:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            ${steps.map(step => `<li>${step}</li>`).join('')}
+                        </ul>
+                        <pre>${JSON.stringify(enrollment, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h4>❌ Error in Complex Operation</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Simple API test functions
+        async function getAllStudents() {
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.innerHTML = '<div class="loading"></div> Loading...';
+            try {
+                const response = await fetch(`${API_BASE_URL}/students`);
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="result success"><h4>All Students</h4><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function getStudentById() {
+            const id = document.getElementById('studentIdInput').value;
+            if (!id) {
+                alert('Please enter a student ID');
+                return;
+            }
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.innerHTML = '<div class="loading"></div> Loading...';
+            try {
+                const response = await fetch(`${API_BASE_URL}/students/${id}`);
+                if (!response.ok) {
+                    throw new Error('Student not found');
+                }
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="result success"><h4>Student ${id}</h4><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function getAllCourses() {
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.innerHTML = '<div class="loading"></div> Loading...';
+            try {
+                const response = await fetch(`${API_BASE_URL}/courses`);
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="result success"><h4>All Courses</h4><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function getFullCourses() {
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.innerHTML = '<div class="loading"></div> Loading...';
+            try {
+                const response = await fetch(`${API_BASE_URL}/courses/full`);
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="result success"><h4>Full Courses (Complex Query)</h4><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function getAllEnrollments() {
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.innerHTML = '<div class="loading"></div> Loading...';
+            try {
+                const response = await fetch(`${API_BASE_URL}/enrollments`);
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="result success"><h4>All Enrollments</h4><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function getEnrollmentsByStudent() {
+            const id = document.getElementById('enrollStudentLookup').value;
+            if (!id) {
+                alert('Please enter a student ID');
+                return;
+            }
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.innerHTML = '<div class="loading"></div> Loading...';
+            try {
+                const response = await fetch(`${API_BASE_URL}/enrollments/student/${id}`);
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="result success"><h4>Enrollments for Student ${id}</h4><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
+

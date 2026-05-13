@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login • Course Enrollment System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-login {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        .input-focus {
+            @apply focus:ring-4 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-300;
+        }
+        .btn-gradient {
+            background: linear-gradient(to right, #4f46e5, #7c3aed);
+            transition: all 0.4s ease;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4">
+
+<div class="w-full max-w-md">
+    <!-- Logo / Title -->
+    <div class="text-center mb-10">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-6 backdrop-blur-md">
+            <i class="fas fa-graduation-cap text-4xl text-white"></i>
+        </div>
+        <h1 class="text-4xl font-extrabold text-white tracking-tight">
+            Course Enrollment
+        </h1>
+        <p class="text-indigo-100 mt-2 text-lg">Sign in to access your dashboard</p>
+    </div>
+
+    <!-- Glassmorphic Login Card -->
+    <div class="glass-login rounded-3xl p-10 shadow-2xl">
+
+        <!-- Success Message (Logout) -->
+        <div th:if="${param.logout}"
+             class="bg-green-500/20 border border-green-400/50 text-green-100 px-5 py-4 rounded-2xl mb-6 flex items-center gap-3 backdrop-blur-sm">
+            <i class="fas fa-check-circle text-xl"></i>
+            <span class="font-medium">You have been successfully logged out.</span>
+        </div>
+
+        <!-- Error Message -->
+        <div th:if="${param.error}"
+             class="bg-red-500/20 border border-red-400/50 text-red-100 px-5 py-4 rounded-2xl mb-6 flex items-center gap-3 backdrop-blur-sm animate-pulse">
+            <i class="fas fa-exclamation-triangle text-xl"></i>
+            <span class="font-medium">Invalid username or password. Please try again.</span>
+        </div>
+
+        <!-- Login Form -->
+        <form action="/login" method="post" class="space-y-6">
+            <div>
+                <label for="username" class="block text-white font-semibold mb-2 text-sm">
+                    <i class="fas fa-user mr-2"></i> Username
+                </label>
+                <input type="text" id="username" name="username" required autocomplete="username"
+                       class="w-full px-5 py-4 bg-white/10 border border-white/30 rounded-xl text-white placeholder-gray-300 input-focus backdrop-blur-sm"
+                       placeholder="Enter your username">
+            </div>
+
+            <div>
+                <label for="password" class="block text-white font-semibold mb-2 text-sm">
+                    <i class="fas fa-lock mr-2"></i> Password
+                </label>
+                <input type="password" id="password" name="password" required autocomplete="current-password"
+                       class="w-full px-5 py-4 bg-white/10 border border-white/30 rounded-xl text-white placeholder-gray-300 input-focus backdrop-blur-sm"
+                       placeholder="Enter your password">
+            </div>
+
+            <button type="submit"
+                    class="w-full btn-gradient text-white font-bold py-5 rounded-xl text-lg shadow-lg btn-gradient mt-8">
+                <i class="fas fa-sign-in-alt mr-2"></i>
+                Sign In
+            </button>
+        </form>
+
+        <!-- Footer Note -->
+        <p class="text-center text-indigo-200 mt-10 text-sm">
+            Don't have an account?
+            <span class="font-bold text-white hover:text-yellow-300 transition cursor-pointer">
+                    Contact your administrator
+                </span>
+        </p>
+    </div>
+
+    <!-- Decorative Bottom Text -->
+    <div class="text-center mt-10">
+        <p class="text-white/70 text-sm">
+            © 2025 <span class="font-bold text-white">Course Enrollment System</span> • Secured & Powered by Spring Security
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

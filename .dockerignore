@@ -1,0 +1,38 @@
+# Gradle
+.gradle/
+build/
+bin/
+*.iml
+.idea/
+.vscode/
+
+# Java
+jdk17/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+HELP.md
+README.md
+DOCKER-KULLANIM.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
